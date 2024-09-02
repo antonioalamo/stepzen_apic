@@ -15,3 +15,5 @@ stepzen import curl "https://introspection.apis.stepzen.com/customers" --query-n
 stepzen import curl "https://introspection.apis.stepzen.com/orders" --query-name "orders" --query-type "Order"
 
 stepzen start
+
+stepzen import mysql --db-host='db.introspection.stepzen.net' --db-database='introspection' --db-user='testUserIntrospection' --db-password='HurricaneStartingSample1934' --name=mysql

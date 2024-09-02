@@ -1,7 +1,7 @@
 type Address {
   city: String
   countryRegion: String
-  id: Int
+  id: Int!
   postalCode: String
   stateProvince: String
   street: String

@@ -1,0 +1,248 @@
+type Customer {
+  email: String!
+  id: Int!
+  name: String!
+}
+
+type CustomerAddress {
+  addressId: Int!
+  customerId: Int!
+}
+
+type Lineitem {
+  orderId: Int!
+  productId: Int!
+  quantity: Int
+}
+
+type Order {
+  carrier: String!
+  createdAt: Date!
+  customerId: Int!
+  id: Int!
+  shippingCost: Float
+  trackingId: String!
+}
+
+type Product {
+  description: String
+  id: Int!
+  image: String
+  title: String
+}
+
+"""
+The following queries are just a set of examples of how to access your schema.
+Feel free to modify them or aggregate more.
+"""
+type Query {
+  " Queries for type 'Address' "
+  addressList: [Address]
+    @dbquery(type: "mysql", table: "address", configuration: "mysql_config")
+  addressPaginatedList(first: Int!, after: Int!): [Address]
+    @dbquery(
+      type: "mysql"
+      query: """
+      SELECT `city`, `countryRegion`, `id`, `postalCode`, `stateProvince`, `street` FROM `address` LIMIT ? OFFSET ?
+      """
+      configuration: "mysql_config"
+    )
+  " Queries for type 'Customer' "
+  customerList: [Customer]
+    @dbquery(type: "mysql", table: "customer", configuration: "mysql_config")
+  customerPaginatedList(first: Int!, after: Int!): [Customer]
+    @dbquery(
+      type: "mysql"
+      query: """
+      SELECT `email`, `id`, `name` FROM `customer` LIMIT ? OFFSET ?
+      """
+      configuration: "mysql_config"
+    )
+  " Queries for type 'CustomerAddress' "
+  customerAddressList: [CustomerAddress]
+    @dbquery(
+      type: "mysql"
+      table: "customerAddress"
+      configuration: "mysql_config"
+    )
+  customerAddressPaginatedList(first: Int!, after: Int!): [CustomerAddress]
+    @dbquery(
+      type: "mysql"
+      query: """
+      SELECT `addressId`, `customerId` FROM `customerAddress` LIMIT ? OFFSET ?
+      """
+      configuration: "mysql_config"
+    )
+  " Queries for type 'Lineitem' "
+  lineitemList: [Lineitem]
+    @dbquery(type: "mysql", table: "lineitem", configuration: "mysql_config")
+  lineitemPaginatedList(first: Int!, after: Int!): [Lineitem]
+    @dbquery(
+      type: "mysql"
+      query: """
+      SELECT `orderId`, `productId`, `quantity` FROM `lineitem` LIMIT ? OFFSET ?
+      """
+      configuration: "mysql_config"
+    )
+  " Queries for type 'Order' "
+  orderByTrackingId(trackingId: String!): [Order]
+    @dbquery(type: "mysql", table: "order", configuration: "mysql_config")
+  orderByTrackingIdAndCarrier(trackingId: String!, carrier: String!): [Order]
+    @dbquery(type: "mysql", table: "order", configuration: "mysql_config")
+  orderList: [Order]
+    @dbquery(type: "mysql", table: "order", configuration: "mysql_config")
+  orderPaginatedList(first: Int!, after: Int!): [Order]
+    @dbquery(
+      type: "mysql"
+      query: """
+      SELECT `carrier`, `createdAt`, `customerId`, `id`, `shippingCost`, `trackingId` FROM `order` LIMIT ? OFFSET ?
+      """
+      configuration: "mysql_config"
+    )
+  " Queries for type 'Product' "
+  productList: [Product]
+    @dbquery(type: "mysql", table: "product", configuration: "mysql_config")
+  productPaginatedList(first: Int!, after: Int!): [Product]
+    @dbquery(
+      type: "mysql"
+      query: """
+      SELECT `description`, `id`, `image`, `title` FROM `product` LIMIT ? OFFSET ?
+      """
+      configuration: "mysql_config"
+    )
+}
+
+"""
+The following mutations are just a set of examples of how to access your schema.
+Feel free to modify them or aggregate more.
+"""
+type Mutation {
+  " Mutations for type 'Address' "
+  deleteAddress(
+    city: String!
+    countryRegion: String!
+    id: Int!
+    street: String!
+    postalCode: String!
+    stateProvince: String!
+  ): Address
+    @dbquery(
+      type: "mysql"
+      table: "address"
+      dml: DELETE
+      configuration: "mysql_config"
+    )
+  insertAddress(
+    city: String!
+    countryRegion: String!
+    id: Int!
+    street: String!
+    postalCode: String!
+    stateProvince: String!
+  ): Address
+    @dbquery(
+      type: "mysql"
+      table: "address"
+      dml: INSERT
+      configuration: "mysql_config"
+    )
+  " Mutations for type 'Customer' "
+  deleteCustomer(name: String!, id: Int!, email: String!): Customer
+    @dbquery(
+      type: "mysql"
+      table: "customer"
+      dml: DELETE
+      configuration: "mysql_config"
+    )
+  insertCustomer(name: String!, email: String!): Customer
+    @dbquery(
+      type: "mysql"
+      table: "customer"
+      dml: INSERT
+      configuration: "mysql_config"
+    )
+  " Mutations for type 'CustomerAddress' "
+  deleteCustomerAddress(addressId: Int!, customerId: Int!): CustomerAddress
+    @dbquery(
+      type: "mysql"
+      table: "customerAddress"
+      dml: DELETE
+      configuration: "mysql_config"
+    )
+  insertCustomerAddress(addressId: Int!, customerId: Int!): CustomerAddress
+    @dbquery(
+      type: "mysql"
+      table: "customerAddress"
+      dml: INSERT
+      configuration: "mysql_config"
+    )
+  " Mutations for type 'Lineitem' "
+  deleteLineitem(quantity: Int!, productId: Int!, orderId: Int!): Lineitem
+    @dbquery(
+      type: "mysql"
+      table: "lineitem"
+      dml: DELETE
+      configuration: "mysql_config"
+    )
+  insertLineitem(quantity: Int!, productId: Int!, orderId: Int!): Lineitem
+    @dbquery(
+      type: "mysql"
+      table: "lineitem"
+      dml: INSERT
+      configuration: "mysql_config"
+    )
+  " Mutations for type 'Order' "
+  deleteOrder(
+    trackingId: String!
+    carrier: String!
+    shippingCost: Float!
+    customerId: Int!
+    id: Int!
+    createdAt: Date!
+  ): Order
+    @dbquery(
+      type: "mysql"
+      table: "order"
+      dml: DELETE
+      configuration: "mysql_config"
+    )
+  insertOrder(
+    trackingId: String!
+    carrier: String!
+    shippingCost: Float!
+    customerId: Int!
+    id: Int!
+    createdAt: Date!
+  ): Order
+    @dbquery(
+      type: "mysql"
+      table: "order"
+      dml: INSERT
+      configuration: "mysql_config"
+    )
+  " Mutations for type 'Product' "
+  deleteProduct(
+    image: String!
+    description: String!
+    title: String!
+    id: Int!
+  ): Product
+    @dbquery(
+      type: "mysql"
+      table: "product"
+      dml: DELETE
+      configuration: "mysql_config"
+    )
+  insertProduct(
+    image: String!
+    description: String!
+    title: String!
+    id: Int!
+  ): Product
+    @dbquery(
+      type: "mysql"
+      table: "product"
+      dml: INSERT
+      configuration: "mysql_config"
+    )
+}
