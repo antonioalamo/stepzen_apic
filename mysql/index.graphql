@@ -37,6 +37,14 @@ Feel free to modify them or aggregate more.
 """
 type Query {
   " Queries for type 'Address' "
+  getAddressById(id: Int!): [Address]
+  @dbquery(
+    type: "mysql"
+    query: """
+    SELECT * FROM `address` where `id` = ?
+    """
+    configuration: "mysql_config"
+  )
   addressList: [Address]
     @dbquery(type: "mysql", table: "address", configuration: "mysql_config")
   addressPaginatedList(first: Int!, after: Int!): [Address]

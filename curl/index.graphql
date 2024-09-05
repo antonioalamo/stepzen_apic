@@ -17,7 +17,8 @@ type OrdersEntry {
 }
 
 type RootEntry {
-  address: Address
+  address: [Address]
+    @materializer (query: "getAddressById")
   email: String
   id: Int
   name: String
